@@ -1,0 +1,4 @@
+dn: cn=admin,dc=example,dc=org
+changetype: modify
+replace: userPassword
+userPassword: {PBKDF2-SHA256}30000$PMkEzhylfckOc2sN$ezAuZFYrzwoLGELWVJVe4X9dlmQx//fwB1gqI3wt.rI
