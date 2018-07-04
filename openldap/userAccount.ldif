@@ -1,0 +1,18 @@
+dn: uid=<username>,ou=people,dc=example,dc=org
+cn: <username>
+givenName: <username>
+sn: <username>
+uid: <username>
+uidNumber: 1002
+gidNumber: 503
+homeDirectory: /home/users/<username>
+loginShell: /bin/bash
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: posixAccount
+userPassword: {PBKDF2-SHA256}30000$PMkEzhylfckOc2sN$ezAuZFYrzwoLGELWVJVe4X9dlmQx//fwB1gqI3wt.rI
+
+dn: gidNumber=503,ou=default_prefix,ou=groups,dc=example,dc=org
+changetype: modify
+add: memberUid
+memberUid: <username>
