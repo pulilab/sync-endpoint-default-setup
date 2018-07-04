@@ -1,11 +1,11 @@
 version: "3.3"
 
-services: 
+services:
   ldap-service:
     image: odk/openldap
     deploy:
       replicas: 1
-    networks: 
+    networks:
       - ldap-network
     volumes:
       - ldap-vol:/var/lib/ldap
@@ -18,7 +18,7 @@ services:
       replicas: 1
     ports:
       - "${PHP_LDAPADMIN_PORT:-40000}:443"
-    networks: 
+    networks:
       - ldap-network
     env_file:
       - ldap.env
@@ -53,13 +53,13 @@ services:
       - sync.env
   sync:
     image: odk/sync_endpoint
-    networks: 
+    networks:
+      - sync-network
       - ldap-network
       - db-network
-      - sync-network
     env_file:
       - sync.env
-    # uncomment these after uncommenting the ones below in the root level configs 
+    # uncomment these after uncommenting the ones below in the root level configs
     # configs:
       # - org.opendatakit.sync.ldapcert
       # - org.opendatakit.aggregate.logging.properties
@@ -136,5 +136,5 @@ secrets:
   org.opendatakit.aggregate.jdbc.properties:
     file: ./config/sync-endpoint/jdbc.properties
   # com.nginx.ssl_certificate_key:
-    # external: 
+    # external:
       # name: NAME OF SECRET
