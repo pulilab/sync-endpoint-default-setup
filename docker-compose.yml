@@ -75,6 +75,9 @@ services:
       - org.opendatakit.sync-web-ui.application.properties
   nginx:
     image: nginx:1.13
+    depends_on:
+      - sync
+      - web-ui
     networks:
       - sync-network
     ports:
