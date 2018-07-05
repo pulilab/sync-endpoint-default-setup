@@ -61,11 +61,12 @@ services:
       - sync.env
     # uncomment these after uncommenting the ones below in the root level configs
     # configs:
-      # - org.opendatakit.sync.ldapcert
-      # - org.opendatakit.aggregate.logging.properties
+    #   - org.opendatakit.sync.ldapcert
+    #   - org.opendatakit.aggregate.logging.properties
     secrets:
       - org.opendatakit.aggregate.security.properties
       - org.opendatakit.aggregate.jdbc.properties
+      - odksync-tomcat.keystore
   web-ui:
     image: odk/sync-web-ui
     networks:
@@ -144,3 +145,6 @@ secrets:
   com.nginx.ssl_certificate_key:
     external:
       name: odk.digitalhealthatlas.org.privkey.pem
+  odksync-tomcat.keystore:
+    file: ./config/sync-endpoint/odksync-tomcat.keystore
+
