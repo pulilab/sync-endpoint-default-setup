@@ -134,7 +134,7 @@ configs:
     file: ./config/nginx/proxy_buffer.conf
   # com.nginx.ssl_certificate:
     # external:
-      # name: NAME OF CONFIG
+      # name: example.com.fullchain.pem
 
 secrets:
   org.opendatakit.aggregate.security.properties:
@@ -143,4 +143,4 @@ secrets:
     file: ./config/sync-endpoint/jdbc.properties
   # com.nginx.ssl_certificate_key:
     # external:
-      # name: NAME OF SECRET
+      # name: examepl.com.privkey.pem
