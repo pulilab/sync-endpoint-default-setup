@@ -13,7 +13,7 @@ Same as [sync-endpoint-containers](https://github.com/opendatakit/sync-endpoint-
 ## Run
 
 1. `docker stack deploy -c docker-compose.yml syncldap` to deploy all services
-2. Navigate to `https://127.0.0.1:40000` (or whichever IP address and port you set up when you initialized your Docker stack) and create a user. See the [LDAP](#ldap) section below for detail  
+2. Navigate to `https://127.0.0.1:40000` (or whichever IP address and port you set up when you initialized your Docker stack) and create a user. See the [LDAP](#ldap) section below for detail
    Note: Your browser might warn you about invalid certificate
 3. The Sync Endpoint will take around 30s to start then it will be running at `http://127.0.0.1`
 
@@ -55,7 +55,7 @@ The `gidNumber` attribute is used by Sync endpoint to determine a user's default
 2. Expand the tree view on the left until you see `ou=groups`
 3. Click on `ou=default_prefix` and choose `Create a child entry`
 4. Choose the `Generic: Posix Group` template
-5. Fill out the form and click create object  
+5. Fill out the form and click create object
    Note: the group name must start with the group prefix, in this case the group prefix is `default_prefix`, e.g. `default_prefix my-new-group`
 
 #### Assigning users to groups (with phpLDAPadmin)
@@ -121,3 +121,33 @@ The OpenLDAP container is from [osixia/openldap](https://github.com/osixia/docke
 The phpLDAPadmin container is from [osixia/phpldapadmin](https://github.com/osixia/docker-phpLDAPadmin)
 
 Refer to their respecitve documentations for usage information.
+
+
+## CERTBOT
+
+```bash
+
+# Set the Domain variable
+ export DOMAIN=NAME_OF_THE_DOMAIN
+
+# Pull the docker image for certbot:
+ docker pull certbot/certbot
+
+# Obtain normal certificate
+docker run -it --rm -v /home/$(whoami)/sync-endpoint-default-setup/nginx/certs:/etc/letsencrypt:rw -v /home/$(whoami)/sync-endpoint-default-setup/nginx/certs-data:/data/letsencrypt:rw -v /home/$(whoami)/sync-endpoint-default-setup/nginx/certs-log://var/log/letsencrypt:rw -v /home/$(whoami)/sync-endpoint-default-setup/nginx/certs-data:/data/letsencrypt:rw  certbot/certbot  certonly --webroot --webroot-path=/data/letsencrypt -d $DOMAIN
+
+# Copy certificates to right folder
+
+sudo cp /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/live/$DOMAIN/privkey.pem /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/key.pem
+sudo cp /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/live/$DOMAIN/fullchain.pem /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/chain.pem
+sudo cp /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/live/$DOMAIN/cert.pem /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/cert.pem
+
+# Set permission of certificates to default user
+sudo chown $(whoami):$(whoami) /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/key.pem
+sudo chown $(whoami):$(whoami) /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/chain.pem
+sudo chown $(whoami):$(whoami) /home/$(whoami)/sync-endpoint-default-setup/nginx/certs/cert.pem
+
+# Refresh normal certificate validity
+docker run -it --rm -v /home/$(whoami)/sync-endpoint-default-setup/nginx/certs:/etc/letsencrypt:rw -v /home/$(whoami)/sync-endpoint-default-setup/nginx/certs-data:/data/letsencrypt:rw  certbot/certbot renew --webroot --webroot-path=/data/letsencrypt -d $DOMAIN
+
+```
